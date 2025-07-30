@@ -1,0 +1,19 @@
+{
+  "name": "backend-quiz",
+  "version": "1.0.0",
+  "description": "A backend for quiz platform",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Ananay Kaushal",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^1.11.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express.js": "^1.0.0"
+  }
+}
