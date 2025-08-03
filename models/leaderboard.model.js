@@ -6,6 +6,10 @@ const leaderBoardSchema=new mongoose.Schema(
             type:Number,
             required:true
         },
+        UserName:{
+            type:String,
+            required:true
+        },
         UserId:{
             type:mongoose.Types.ObjectId,
             ref:"User"

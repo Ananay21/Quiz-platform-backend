@@ -129,18 +129,18 @@ export const updateQuiz= async (req,res)=>{
 export const generateQuiz=async (req,res)=>{
     const APIKEY=process.env.GEMINI_API_KEY;
     const ai=new GoogleGenAI({apiKey:APIKEY});
-    const {centralTopic,subTopics,userId}=req.body;
+    const {centralTopic,subTopics,userId,level}=req.body;
 
     try {
 
-        if(!centralTopic||!subTopics||!userId){
+        if(!centralTopic||!subTopics||!userId||!level){
             return res.status(400).json({message:"data not provided",success:false});
         }
         
         const aiResponse=await ai.models.generateContent(
             {
                 model:'gemini-2.0-flash-001',
-                contents:`Generate a quiz as {[{"Question":"String","Options":["String"],"Answer":"String"}]}. There should be 5 questions in it. It should revolve around the central topic of ${centralTopic} and subtopics as ${subTopics}. Don't add any extra messages. Add an underscore,and then  add a description for this quiz. Thank you`
+                contents:`Generate a quiz as {[{"Question":"String","Options":["String"],"Answer":"String"}]}. There should be 5 questions in it. It should revolve around the central topic of ${centralTopic} and subtopics as ${subTopics}.The level of the questions, on a scale of 1-3,1 being easy, 2 being medium and 3 being hard, should be ${level} .Don't add any extra messages. Add an underscore,and then  add a description for this quiz. Thank you`
             }
         );
 
@@ -156,7 +156,8 @@ export const generateQuiz=async (req,res)=>{
                 SubTopics:subTopics,
                 CreatorId:userId,
                 Description:aiResponse.text.split('_')[1],
-                Questions:quizObj
+                Questions:quizObj,
+                Level:level
             }
         );
 

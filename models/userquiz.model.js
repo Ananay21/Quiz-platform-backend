@@ -31,6 +31,9 @@ const userQuizSchema=new mongoose.Schema(
             type:[questionSchema],
             required:true
         },
+        Level:{
+            type:Number
+        },
         CreatorId:{
             type:mongoose.Types.ObjectId,
             ref:"User",
