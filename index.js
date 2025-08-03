@@ -3,12 +3,23 @@ import { configDotenv } from "dotenv";
 import connectDB from "./utils/Database.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app=express();
 
 configDotenv();
-app.use(bodyParser.json({limit:"50mb"}));
+app.use(bodyParser.json(
+    {
+        limit:"50mb"
+    }
+));
 app.use(cookieParser());
+app.use(cors(
+    {
+        origin:"http://localhost:5173",
+        credentials:true
+    }
+));
 
 import userRouter from "./routes/user.route.js";
 import userquizRouter from "./routes/userquiz.route.js";

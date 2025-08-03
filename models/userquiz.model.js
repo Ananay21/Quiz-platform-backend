@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 
 const questionSchema=new mongoose.Schema(
     {
-        question:{
+        Question:{
             type:String,
             required:true
         },
-        options:{
+        Options:{
             type:[String],
             required:true
         },
-        answer:{
+        Answer:{
             type:String,
             required:true,
         }

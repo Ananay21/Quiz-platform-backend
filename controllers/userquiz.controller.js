@@ -1,4 +1,5 @@
 import userquizModel from "../models/userquiz.model.js";
+import {GoogleGenAI} from "@google/genai";
 
 export const getQuizs=async (req,res)=>{
     try {
@@ -100,6 +101,51 @@ export const updateQuiz= async (req,res)=>{
 
     } catch (error) {
         console.log("error updating quiz as: ",error.message);
+        return res.status(500).json({message:"internal server error",success:false});
+    }
+};
+
+export const generateQuiz=async (req,res)=>{
+    const APIKEY=process.env.GEMINI_API_KEY;
+    const ai=new GoogleGenAI({apiKey:APIKEY});
+    const {centralTopic,subTopics,userId}=req.body;
+
+    try {
+
+        if(!centralTopic||!subTopics||!userId){
+            return res.status(400).json({message:"data not provided",success:false});
+        }
+        
+        const aiResponse=await ai.models.generateContent(
+            {
+                model:'gemini-2.0-flash-001',
+                contents:`Generate a quiz as {[{"Question":"String","Options":["String"],"Answer":"String"}]}. There should be 5 questions in it. It should revolve around the central topic of ${centralTopic} and subtopics as ${subTopics}. Don't add any extra messages. Add an underscore,and then  add a description for this quiz. Thank you`
+            }
+        );
+
+        if(!aiResponse){
+            return res.status(500).json({message:"error in generating quiz",success:false});
+        }
+
+        const quizObj=JSON.parse(aiResponse.text.split('_')[0].slice(7));
+
+        const insertObj= await userquizModel.insertOne(
+            {
+                CentralTopic:centralTopic,
+                SubTopics:subTopics,
+                CreatorId:userId,
+                Description:aiResponse.text.split('_')[1],
+                Questions:quizObj
+            }
+        );
+
+        if(!insertObj){
+            return res.status(500).json({message:"error inserting data!",success:false});
+        }
+
+        return res.status(200).json({message:"quiz created",success:true,data:insertObj});
+    } catch (error) {
+        console.log("error in generating quiz as: ",error.message);
         return res.status(500).json({message:"internal server error",success:false});
     }
 };
