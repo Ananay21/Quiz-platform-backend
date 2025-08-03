@@ -1,5 +1,22 @@
 import mongoose from "mongoose";
 
+const questionSchema=new mongoose.Schema(
+    {
+        question:{
+            type:String,
+            required:true
+        },
+        options:{
+            type:[String],
+            required:true
+        },
+        answer:{
+            type:String,
+            required:true,
+        }
+    }
+);
+
 const userQuizSchema=new mongoose.Schema(
     {
         CentralTopic:{
@@ -8,6 +25,10 @@ const userQuizSchema=new mongoose.Schema(
         },
         SubTopics:{
             type:[String],
+            required:true
+        },
+        Questions:{
+            type:[questionSchema],
             required:true
         },
         CreatorId:{

@@ -1,19 +1,21 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 import connectDB from "./utils/Database.js";
-import { signUp,login, logOut } from "./controllers/user.controller.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
 const app=express();
+
 configDotenv();
 app.use(bodyParser.json({limit:"50mb"}));
 app.use(cookieParser());
 
-app.get("/",(req,res)=>res.send("hello world!"));
-app.post("/createUser",signUp);
-app.post("/login",login);
-app.get("/logout",logOut);
+import userRouter from "./routes/user.route.js";
+import userquizRouter from "./routes/userquiz.route.js";
+
+app.use("/api/user",userRouter);
+app.use("/api/quiz",userquizRouter);
+
 try{
     const isConnected=await connectDB();
     if(isConnected){
