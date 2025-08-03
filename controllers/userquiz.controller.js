@@ -35,6 +35,27 @@ export const getQuizById=async (req,res)=>{
     }
 };
 
+export const getQuizByUserId=async (req,res)=>{
+    const id=req.params.id;
+
+    try {
+        if(!id){
+            return res.status(400).json({message:"id not provided!",success:false});
+        }
+
+        const getAllQuiz=await userquizModel.findOne({CreatorId:id});
+
+        if(!getAllQuiz){
+            return res.status(404).json({message:"quiz of user not found!",success:false});
+        }
+
+        return res.status(200).json({mesage:"quiz found",success:true,data:getAllQuiz});
+    } catch (error) {
+        console.log("error in getting quiz by user id as: ",error.message);
+        return res.status(500).json({message:"internal server error",success:false});
+    }
+};
+
 export const createQuiz=async (req,res)=>{
     const {centralTopic,subTopics,questions,creatorId,description}=req.body;
 
