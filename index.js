@@ -23,9 +23,11 @@ app.use(cors(
 
 import userRouter from "./routes/user.route.js";
 import userquizRouter from "./routes/userquiz.route.js";
+import leaderboardRouter from "./routes/leaderboard.route.js";
 
 app.use("/api/user",userRouter);
 app.use("/api/quiz",userquizRouter);
+app.use("/api/leaderboard",leaderboardRouter);
 
 try{
     const isConnected=await connectDB();
