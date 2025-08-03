@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const verifyJWT=async (userId,res)=>{
-    const token=await jwt.sign({userId},process.env.JWT_SECRET_KEY,{expiresIn:"7d"});
+    const token=await jwt.sign({userId:userId},process.env.JWT_SECRET_KEY,{expiresIn:"7d"});
 
     res.cookie("jwt",token,
         {
