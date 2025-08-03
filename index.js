@@ -1,6 +1,6 @@
 import express from "express";
 import { configDotenv } from "dotenv";
-import connectDB from "./utils/Database.js";
+import connectDB from "./lib/Database.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
